@@ -1,9 +1,10 @@
 require('dotenv').config()
-const port = process.env.PORT || 3000
 
+const bodyParser = require('body-parser')
 const express = require('express')
 const app = express()
-const bodyParser = require('body-parser')
+
+const categoriesRoutes = require('./routes/categories')
 const api = require('./api')
 
 app.set('view engine', 'ejs')
@@ -15,41 +16,9 @@ app.get('/', async(req, res) => {
     res.render('index', { api_echo: content})
 })
 
-app.get('/categories', async(req, res) => {
-    const categories = await api.list('categories')
-    res.render('categories/index', { categories: categories })
-})
+app.use('/categories', categoriesRoutes)
 
-app.get('/categories/create', (req, res) => {
-    res.render('categories/create')
-})
-
-app.post('/categories/store', async(req, res) => {
-    await api.create('categories', {
-        name: req.body.name
-    })
-    res.redirect('/categories')
-})
-
-app.get('/categories/edit/:id', async(req, res) => {
-    const category = await api.get('categories', req.params.id)
-    res.render('categories/edit', {
-        category
-    })
-})
-
-app.post('/categories/update/:id', async(req, res) => {
-    await api.update('categories', req.params.id, {
-        name: req.body.name
-    })
-    res.redirect('/categories')
-})
-
-app.get('/categories/destroy/:id', async(req, res) => {
-    await api.destroy('categories', req.params.id)
-    res.redirect('/categories')
-})
-
+const port = process.env.PORT || 3000
 app.listen(port, (err) => {
     if(err){
         console.log('Error: ', err)
