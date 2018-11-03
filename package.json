@@ -1,0 +1,11 @@
+{
+  "name": "como_fazer",
+  "version": "1.0.0",
+  "description": "wiki how clone",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Vitor S Rodrigues",
+  "license": "MIT"
+}
