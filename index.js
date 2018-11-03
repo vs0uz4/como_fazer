@@ -2,12 +2,14 @@ require('dotenv').config()
 
 const express = require('express')
 const app = express()
+const axios = require('axios')
 const port = process.env.PORT || 3000
 
 app.set('view engine', 'ejs')
 
-app.get('/', (request, response) => {
-    response.render('index')
+app.get('/', async(request, response) => {
+    const content = await axios.get('https://como-fazer-add43.firebaseio.com/api_echo.json') || 'Enjoy the Silence!'
+    response.render('index', { api_echo: content.data})
 })
 
 app.listen(port, (err) => {
