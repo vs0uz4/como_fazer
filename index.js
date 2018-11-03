@@ -1,33 +1,22 @@
 require('dotenv').config()
+const port = process.env.PORT || 3000
 
 const express = require('express')
 const app = express()
-const axios = require('axios')
 const bodyParser = require('body-parser')
+const api = require('./api')
 
 app.set('view engine', 'ejs')
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', async(req, res) => {
-    const result = await axios.get('https://como-fazer-add43.firebaseio.com/api_echo.json')
-    const content = !(result.data) ? 'Enjoy the Silence!' : result.data
+    const content = await api.echo()
     res.render('index', { api_echo: content})
 })
 
 app.get('/categories', async(req, res) => {
-    const result = await axios.get('https://como-fazer-add43.firebaseio.com/categories.json')    
-    const content = !(result.data) ? [] : result.data
-
-    const categories = Object
-                        .keys(content)
-                        .map(key => {
-                            return {
-                                id: key,
-                                ...content[key]
-                            }
-                        })
-
+    const categories = await api.list('categories')
     res.render('categories/index', { categories: categories })
 })
 
@@ -36,35 +25,30 @@ app.get('/categories/create', (req, res) => {
 })
 
 app.post('/categories/store', async(req, res) => {
-    await axios.post('https://como-fazer-add43.firebaseio.com/categories.json', {
+    await api.create('categories', {
         name: req.body.name
     })
     res.redirect('/categories')
 })
 
 app.get('/categories/edit/:id', async(req, res) => {
-    const content = await axios.get(`https://como-fazer-add43.firebaseio.com/categories/${req.params.id}.json`)
+    const category = await api.get('categories', req.params.id)
     res.render('categories/edit', {
-        category: {
-            id: req.params.id,
-            ...content.data
-        }
+        category
     })
 })
 
 app.post('/categories/update/:id', async(req, res) => {
-    await axios.put(`https://como-fazer-add43.firebaseio.com/categories/${req.params.id}.json`, {
+    await api.update('categories', req.params.id, {
         name: req.body.name
     })
     res.redirect('/categories')
 })
 
 app.get('/categories/destroy/:id', async(req, res) => {
-    await axios.delete(`https://como-fazer-add43.firebaseio.com/categories/${req.params.id}.json`)
+    await api.destroy('categories', req.params.id)
     res.redirect('/categories')
 })
-
-const port = process.env.PORT || 3000
 
 app.listen(port, (err) => {
     if(err){
