@@ -1,24 +1,23 @@
 require('dotenv').config()
+const port = process.env.PORT || 3000
 
 const bodyParser = require('body-parser')
 const express = require('express')
 const app = express()
 
-const categoriesRoutes = require('./routes/categories')
 const api = require('./api')
+const categoriesRoutes = require('./routes/categories')
 
 app.set('view engine', 'ejs')
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/categories', categoriesRoutes)
 
 app.get('/', async(req, res) => {
     const content = await api.echo()
     res.render('index', { api_echo: content})
 })
 
-app.use('/categories', categoriesRoutes)
-
-const port = process.env.PORT || 3000
 app.listen(port, (err) => {
     if(err){
         console.log('Error: ', err)
