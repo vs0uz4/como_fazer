@@ -10,8 +10,8 @@ const categoriesRoutes = require('./routes/categories')
 const postsRoutes = require('./routes/posts')
 
 app.set('view engine', 'ejs')
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/static', express.static('assets'))
 app.use('/categories', categoriesRoutes)
 app.use('/posts', postsRoutes)
