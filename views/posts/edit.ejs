@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <%- include('../head') %>
+    </head>
+    <body>
+        <%- include('../nav') %>
+
+        <div class="container-fluid pt-3">
+            <h4><i class="fas fa-newspaper"></i> Edição da Publicação - <span class="badge badge-secondary"><%= category.name %></span></h4>
+
+            <form method="POST" action="/posts/update/<%= category.id %>/<%= post.id %>">
+                <div class="form-group">
+                    <label for="title">Título</label>
+                    <input type="text" class="form-control" id="title" name="title" value="<%= post.title %>" placeholder="Insira o Título da Publicação" required>
+                </div>
+                <div class="form-group">
+                    <label for="content">Conteúdo</label>
+                    <textarea class="form-control" id="content" name="content" rows="10" required><%= post.content %></textarea>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <a href="javascript:history.back()" class="btn btn-secondary"><i class="fas fa-chevron-left"></i> Voltar</a>
+                        <button type="submit" class="btn btn-secondary"><i class="fas fa-save"></i> Salvar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <%- include('../footer') %>
+    </body>
+</html>

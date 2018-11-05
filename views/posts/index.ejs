@@ -7,25 +7,28 @@
         <%- include('../nav') %>
 
         <div class="container-fluid pt-3">
-            <h4><i class="fas fa-tasks"></i> Listagem de Categorias</h4>
-            <a class="btn btn-secondary" href="/categories/create"><i class="fas fa-plus"></i> Nova Categoria</a><br />
+            <h4><i class="fas fa-newspaper"></i> Listagem de Publicações</h4>
+            <a class="btn btn-secondary" href="/posts/create"><i class="fas fa-plus"></i> Nova Publicação</a><br />
 
             <div class="table-responsive pt-3">
                 <table class="table table-hover">
                     <thead>
                     <tr>
+                        <th scope="col">Título</th>
                         <th scope="col">Categoria</th>
                         <th scope="col">Ações</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <% categories.forEach(category => { %>
+                    <% postsOfCategories.forEach(post => { %>
                         <tr>
-                            <th scope="row"><%= category.name %></th>
+                            <th scope="row"><%= post.id %></th>
                             <td>
-                                <a class="text-dark" href="/posts/category/<%= category.id %>"><i class="fas fa-eye"></i> Publicações</a> | 
-                                <a class="text-dark" href="/categories/edit/<%= category.id %>"><i class="fas fa-edit"></i> Editar</a> | 
-                                <a class="text-dark" href="/categories/destroy/<%= category.id %>"><i class="fas fa-trash"></i> Excluir</a><br />
+                                <%= post.category %>
+                            </td>
+                            <td>
+                                <a class="text-dark"><i class="fas fa-edit"></i> Editar</a> | 
+                                <a class="text-dark"><i class="fas fa-trash"></i> Excluir</a><br />
                             </td>
                         </tr>
                     <% }) %>
