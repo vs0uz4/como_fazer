@@ -22,6 +22,29 @@ const list = async(key) => {
     return objects
 }
 
+const listEntityByEntity = async(key) => {
+    const result = await axios.get(baseURL + key + '.json?auth=' + auth)
+    const content = !(result.data) ? [] : result.data
+    const objects = Object
+                    .keys(content)
+                    .map(key => {
+                        const posts = content[key]
+                        const post = Object
+                            .keys(posts)
+                            .map(key => {
+                                return {
+                                    id: key,
+                                    ...posts[key]
+                                }
+                            })
+                        return {
+                            id: key,
+                            post: post 
+                        }
+                    })
+    return objects
+}
+
 const get = async(key, id) => {
     const content = await axios.get(`${baseURL}/${key}/${id}.json?auth=${auth}`)
     return {
@@ -46,5 +69,5 @@ const destroy = async(key, id) => {
 }
 
 module.exports = {
-    echo, list, get, create, update, destroy
+    echo, list, listEntityByEntity, get, create, update, destroy
 }
