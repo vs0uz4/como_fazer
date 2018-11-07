@@ -20,17 +20,19 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <% postsOfCategories.forEach(post => { %>
+                    <% postsOfCategories.forEach(category => { %>
+                        <% category.post.forEach(post => { %>
                         <tr>
-                            <th scope="row"><%= post.id %></th>
+                            <th scope="row"><%= post.title %></th>
                             <td>
                                 <%= post.category %>
                             </td>
                             <td>
-                                <a class="text-dark"><i class="fas fa-edit"></i> Editar</a> | 
-                                <a class="text-dark"><i class="fas fa-trash"></i> Excluir</a><br />
+                                <a class="text-dark" href="/posts/edit/<%= category.id %>/<%= post.id %>"><i class="fas fa-edit"></i> Editar</a> | 
+                                <a class="text-dark" href="/posts/destroy/<%= category.id %>/<%= post.id %>"><i class="fas fa-trash"></i> Excluir</a><br />
                             </td>
                         </tr>
+                        <% }) %>
                     <% }) %>
                     </tbody>
                 </table>
