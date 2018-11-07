@@ -32,6 +32,7 @@ const update = async(req, res) => {
 
 const destroy = async(req, res) => {
     await api.destroy('categories', req.params.id)
+    await api.destroy('posts', req.params.id)
     res.redirect('/categories')
 }
 

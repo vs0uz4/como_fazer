@@ -1,7 +1,7 @@
 const api = require('../api')
 
 const index = async(req, res) => {
-    const postsOfCategories = await api.list('posts')
+    const postsOfCategories = await api.listEntityByEntity('posts')
     res.render('posts/index', { postsOfCategories })
 } 
 
@@ -17,11 +17,13 @@ const create = async(req, res) => {
 }
 
 const store = async(req, res) => {
+    const category = await api.get('categories', req.body.category) 
     await api.create(`posts/${req.body.category}`, {
+        category: category.name,
         title: req.body.title,
         content: req.body.content
     })
-    res.redirect(`/posts/category/${req.body.category}`)
+    res.redirect('/posts')
 }
 
 const edit = async(req, res) => {
@@ -33,16 +35,18 @@ const edit = async(req, res) => {
 }
 
 const update = async(req, res) => {
+    const category = await api.get('categories', req.params.category) 
     await api.update(`posts/${req.params.category}`, req.params.id, {
+        category: category.name,
         title: req.body.title,
         content: req.body.content
     })
-    res.redirect(`/posts/category/${req.params.category}`)
+    res.redirect('/posts')
 }
 
 const destroy = async(req, res) => {
     await api.destroy(`posts/${req.params.category}`, req.params.id)
-    res.redirect(`/posts/category/${req.params.category}`)
+    res.redirect('/posts')
 }
 
 module.exports = {
